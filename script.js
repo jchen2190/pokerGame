@@ -8,8 +8,8 @@ for (let i = 0; i < kinds.length; i++) {
         let suit = suits[j];
         let name = `${kind} of ${suit}`;
         let file = `${kind}-of-${suit}.png`;
-
         let valu = 0;
+        
         if (kind == 'Ace') {
             valu = 11; 
         } else if (kind.length > 3) {
@@ -40,16 +40,10 @@ function dealPokerHand() {
     // cardBox.innerHTML = ""; // remove all content from card box
     for (let i = 0; i < cardHand.length; i++) {
         let r = Math.floor(Math.random() * deckCopy.length); // 0-51
-
-        // cardBox.innerHTML += `<img src="images/${deckCopy[r]}.png">`  old way
-        cardHand[i].src = `images/${deckCopy[r].file}`;
-
-        // avoid card repeat by splicing out dealt cards
+        cardHand[i].src = `images/${deckCopy[r].file}`; // images/${deckCopy[r]}.png
         deckCopy.splice(r, 1); // remove 1 card at the random index
-
-        // when we are down to our last 2 cards, make a fresh deck
-        if (deckCopy.length <= 2) {
-            deckCopy = [...deckOfCards];
+        if (deckCopy.length <= 2) { 
+            deckCopy = [...deckOfCards]; // fresh deck
         }
     }
 }
