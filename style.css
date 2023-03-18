@@ -5,16 +5,26 @@ body {
 }
 img {
     width: 100px;
+    cursor: pointer;
 }
-
 button {
-    width: 150px;
-    margin-top: 20px;
+    width: 120px;
+    margin: 20px;
     font-size: 1.3rem;
     font-weight: bold;
     border-radius: 8px;
-    background-color: darkred;
-    color: white;
-    cursor: pointer;
     text-transform: uppercase;
+}
+.btnDisable {
+    cursor: default;
+    color: rgb(172, 172, 172);
+    background-color: rgb(70, 0, 0);
+}
+.btnEnable {
+    cursor: pointer;
+    color: white;
+    background-color: darkred;
+}
+.selectCard {
+    border: red;
 }

@@ -18,7 +18,7 @@ for (let i = 0; i < kinds.length; i++) {
             valu = Number(kind);
         }
 
-        let card = {  // make card objects
+        let card = {
             kind: kind,
             suit: suit,
             name: name,
@@ -29,21 +29,69 @@ for (let i = 0; i < kinds.length; i++) {
     }
 }
 
-const btn = document.querySelector('button');
-btn.addEventListener('click', dealPokerHand);
-const cardHand = document.querySelectorAll('#card-box img');
-const cardBox = document.getElementById('card-box');
-
+const dealBtn = document.querySelector("#deal-btn");
+dealBtn.addEventListener("click", dealPokerHand);
+const switchBtn = document.querySelector("#switch-btn")
+switchBtn.addEventListener("click", switchPokerHand)
+const cardHand = document.querySelectorAll("#card-box img")
+const cardBox = document.getElementById("card-box");
 deckCopy = [...deck];
 
 function dealPokerHand() {
-    // cardBox.innerHTML = ""; // remove all content from card box
     for (let i = 0; i < cardHand.length; i++) {
         let r = Math.floor(Math.random() * deckCopy.length); // 0-51
-        cardHand[i].src = `images/${deckCopy[r].file}`; // images/${deckCopy[r]}.png
-        deckCopy.splice(r, 1); // remove 1 card at the random index
+        cardHand[i].src = `images/${deckCopy[r].file}`;
+        cardHand[i].addEventListener("click", selectCard);
+        cardHand[i].valu = i;
+        cardHand[i].boolean = true;
+        deckCopy.splice(r, 1);
         if (deckCopy.length <= 2) { 
-            deckCopy = [...deckOfCards]; // fresh deck
+            deckCopy = [...deck];
         }
     }
+    dealBtnDisable();
+    switchBtnEnable();
+}
+
+// TODO: change border (to transform?) and fixed image
+function selectCard() {
+    if(cardHand[this.valu].boolean) {
+        cardHand[this.valu].style.border = "5px solid green";
+    } else {
+        cardHand[this.valu].style.border = "5px solid red";
+    }
+    cardHand[this.valu].boolean = !cardHand[this.valu].boolean
+    console.log(cardHand[this.valu].boolean);
+}
+
+// TODO: stop after one switch
+function switchPokerHand() {
+    for (let i = 0; i < cardHand.length; i++) {
+        if(cardHand[i].boolean == false) {
+            let r = Math.floor(Math.random() * deckCopy.length);
+            cardHand[i].src = `images/${deckCopy[r].file}`;
+            deckCopy.splice(r, 1);
+        }
+    }
+}
+
+function dealBtnEnable() {
+    dealBtn.disabled = false;
+    dealBtn.classList.add("btnEnable");
+    dealBtn.classList.remove("btnDisable");
+}
+function dealBtnDisable() {
+    dealBtn.disabled = true;
+    dealBtn.classList.remove("btnEnable");
+    dealBtn.classList.add("btnDisable");
+}
+function switchBtnEnable() {
+    switchBtn.disabled = false;
+    switchBtn.classList.add("btnEnable");
+    switchBtn.classList.remove("btnDisable");
+}
+function switchBtnDisable() {
+    switchBtn.disabled = true;
+    switchBtn.classList.remove("btnEnable");
+    switchBtn.classList.add("btnDisable");
 }
