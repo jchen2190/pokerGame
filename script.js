@@ -42,8 +42,11 @@ function dealPokerHand() {
         let r = Math.floor(Math.random() * deckCopy.length); // 0-51
         cardHand[i].src = `images/${deckCopy[r].file}`;
         cardHand[i].addEventListener("click", selectCard);
-        cardHand[i].valu = i;
+        cardHand[i].suit = deckCopy[r].suit;
+        cardHand[i].kind = deckCopy[r].kind;
+        cardHand[i].indx = i;
         cardHand[i].boolean = true;
+        cardHand[i].style.cursor = "pointer";
         deckCopy.splice(r, 1);
         if (deckCopy.length <= 2) { 
             deckCopy = [...deck];
@@ -53,15 +56,13 @@ function dealPokerHand() {
     switchBtnEnable();
 }
 
-// TODO: change border (to transform?) and fixed image
 function selectCard() {
-    if(cardHand[this.valu].boolean) {
-        cardHand[this.valu].style.border = "5px solid green";
+    if(cardHand[this.indx].boolean) {
+        cardHand[this.indx].style.transform = "translateY(-10px)";
     } else {
-        cardHand[this.valu].style.border = "5px solid red";
+        cardHand[this.indx].style.transform = "translateY(0px)";
     }
-    cardHand[this.valu].boolean = !cardHand[this.valu].boolean
-    console.log(cardHand[this.valu].boolean);
+    cardHand[this.indx].boolean = !cardHand[this.indx].boolean
 }
 
 // TODO: stop after one switch
@@ -70,8 +71,40 @@ function switchPokerHand() {
         if(cardHand[i].boolean == false) {
             let r = Math.floor(Math.random() * deckCopy.length);
             cardHand[i].src = `images/${deckCopy[r].file}`;
+            cardHand[i].suit = deckCopy[r].suit;
+            cardHand[i].kind = deckCopy[r].kind;
+            cardHand[i].style.transform = "translate(0px)";
+            cardHand[i].boolean = true;
             deckCopy.splice(r, 1);
         }
+    }
+    evalGame();
+}
+
+// TODO: evaluate card hand
+function evalGame() {
+    let cardKind = [];
+    let cardSuit = [];
+    for (let i = 0; i < cardHand.length; i++) {
+        cardKind.push(cardHand[i].kind);
+        cardSuit.push(cardHand[i].suit);
+    }
+    console.log('cardKind', cardKind);
+    console.log('cardSuit', cardSuit);
+
+    let countKind = {};
+    let countSuit = {};
+    cardKind.forEach((e) => {
+        countKind[e] = (countKind[e] || 0) + 1;
+    })
+    cardSuit.forEach((e) => {
+        countSuit[e] = (countSuit[e] || 0) + 1;
+    })
+    console.log('countKind', countKind);
+    console.log('countSuit', countSuit);
+
+    if (countSuit.Spades == "5" || countSuit.Hearts == "5" || countSuit.Clubs == "5" || countSuit.Diamonds == "5") {
+        console.log("FLUSH");
     }
 }
 
